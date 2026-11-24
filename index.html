@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MỘC SINH – Xà phòng tái sinh</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@600&display=swap">
+<style>
+:root{--bg:#eadfc6;--paper:#f8f0dc;--ink:#2a2218;--muted:#6a5a44;--leaf:#3f6b34;--rust:#b5541c;--coffee:#4a3223;--line:#cdbb97;
+--head:"Baloo 2","Trebuchet MS",sans-serif;--body:"Be Vietnam Pro",system-ui,sans-serif;--hand:"Caveat","Comic Sans MS",cursive}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1d1a12;--paper:#292318;--ink:#f1e8d2;--muted:#bcae92;--line:#4a3f2b;--leaf:#8fbf5a;--rust:#e08a52;--coffee:#c99a6b}}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;color:var(--ink);font:400 17px/1.65 var(--body);background:var(--bg) repeating-linear-gradient(0deg,transparent 0 3px,rgba(120,90,40,.035) 3px 4px)}
+h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0 0 .4em}
+h1{font-size:clamp(2.6rem,8vw,4.8rem);font-weight:800;color:var(--leaf)}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:800}
+h3{font-size:1.15rem}
+p{margin:0 0 1em;max-width:60ch}
+:focus-visible{outline:3px solid var(--rust);outline-offset:3px}
+nav{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:2px dashed var(--line);padding:.5rem 1rem;display:flex;gap:.25rem .8rem;align-items:center;overflow-x:auto;white-space:nowrap}
+nav b{font-family:var(--head);color:var(--leaf);font-size:1.35rem;margin-right:auto}
+nav a{text-decoration:none;font-size:.95rem;padding:.3rem .55rem;border-radius:8px;color:inherit}
+nav a:hover{background:var(--line)}
+section,.wrap{max-width:1080px;margin:0 auto;padding:3.5rem 1.25rem}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;align-items:center;min-height:80vh}
+.hand{font:600 1.7rem/1.2 var(--hand);color:var(--rust);margin:.2rem 0 1.4rem}
+.btn{display:inline-block;font:600 1rem var(--body);padding:.75rem 1.4rem;border-radius:10px;border:2px solid var(--coffee);text-decoration:none;margin:0 .5rem .6rem 0;background:var(--paper);color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--coffee)}
+.btn.main{background:var(--leaf);color:#fff;border-color:var(--coffee)}
+.btn:hover{transform:translate(-1px,-1px)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.scene{max-width:400px;width:100%;margin:auto}
+.scene svg{width:100%;display:block;overflow:visible}
+#tail{transform-origin:55px 160px;animation:wag .5s ease-in-out infinite alternate}
+#cape{transform-origin:150px 85px;animation:cape 2.2s ease-in-out infinite alternate}
+#eyes{transform-origin:150px 74px;animation:blink 4s infinite}
+.rider{animation:bob 1.5s ease-in-out infinite}
+@keyframes wag{to{transform:rotate(-22deg)}}@keyframes cape{to{transform:skewX(-8deg)}}@keyframes blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}@keyframes bob{50%{transform:translateY(-4px)}}
+.glow{animation:pulse 2.4s ease-in-out infinite;transform-origin:center}
+@keyframes pulse{50%{opacity:.55;transform:scale(1.15)}}
+.panel{background:var(--paper);border:2px solid var(--coffee);border-radius:6px;padding:1.2rem;position:relative;box-shadow:5px 5px 0 var(--line)}
+.panel::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:22px;margin-left:-42px;background:rgba(181,84,28,.35);transform:rotate(-2deg)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin-top:1.4rem}
+.ing{background:none;border:0;font:inherit;color:inherit;text-align:center;cursor:pointer;padding:.3rem}
+.ing .slot{aspect-ratio:4/3;margin-bottom:.5rem}
+.ing small{display:none;color:var(--muted);font-size:.88rem}
+.ing[aria-expanded=true] small{display:block}
+.ing:hover .slot{transform:rotate(-1.5deg)}
+.slot{position:relative;border-radius:8px;overflow:hidden;border:2px solid var(--coffee);background:var(--line);transition:transform .2s}
+.slot svg,.slot img{width:100%;height:100%;display:block;object-fit:cover}
+.edit .slot::after{content:"Bấm để chọn ảnh";position:absolute;inset:0;display:grid;place-items:center;background:rgba(42,34,24,.6);color:#fff;font-weight:600;cursor:pointer;text-align:center;padding:.4rem}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem;margin-top:1rem}
+.steps{list-style:none;padding:0;margin:1rem 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;counter-reset:s}
+.steps li{counter-increment:s;background:var(--paper);border-left:5px solid var(--leaf);padding:.9rem 1rem;border-radius:6px}
+.steps li::before{content:counter(s);font:800 1.5rem var(--head);color:var(--rust);display:block}
+.note{font-size:.86rem;color:var(--muted)}
+.tool{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:flex-end}
+.tool .btn{margin:0;font-size:.85rem;padding:.5rem .9rem}
+footer{background:var(--leaf);color:#fff;text-align:center;padding:1.6rem 1rem 3.5rem}
+footer p{margin:.3rem auto;font-family:var(--hand);font-size:1.5rem}
+footer a{color:#fff;margin:0 .6rem;font-size:.95rem}
+@media(max-width:760px){.hero{grid-template-columns:1fr;min-height:auto}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto;transition:none!important}}
+</style>
+</head>
+<body>
+<nav aria-label="Menu chính"><b>MỘC SINH</b><a href="#home">Trang chủ</a><a href="#about">Về dự án</a><a href="#ingredients">Nguyên liệu</a><a href="#process">Quy trình</a><a href="#products">Sản phẩm</a><a href="#story">Câu chuyện</a><a href="#game">Game</a><a href="#contact">Liên hệ</a></nav>
+<main>
+<section class="hero" id="home">
+<div><h1>Cùng khám phá thế giới tái sinh</h1>
+<p class="hand" id="tag"></p>
+<a class="btn main" href="#game">Chơi game</a><a class="btn" href="#about">Khám phá dự án</a>
+<p class="note">Bản demo của dự án sinh viên. Ảnh và thông tin sẽ được thay bằng dữ liệu thật.</p></div>
+<div class="scene" aria-label="Cậu bé đeo kính, áo choàng đỏ cưỡi chú chó Corgi">
+<svg viewBox="0 0 300 300" aria-hidden="true">
+<ellipse cx="150" cy="272" rx="115" ry="13" fill="#3f6b34" opacity=".25"/>
+<g class="glow"><circle cx="258" cy="56" r="20" fill="#5ec8f0" opacity=".45"/></g><path d="M258 42l10 14-10 14-10-14z" fill="#9be4ff" stroke="#2b7ea1" stroke-width="2"/>
+<g class="rider"><g id="tail"><ellipse cx="55" cy="160" rx="14" ry="8" fill="#e0a050"/></g>
+<rect x="75" y="150" width="150" height="66" rx="33" fill="#e0a050"/><ellipse cx="170" cy="190" rx="50" ry="24" fill="#fff1d8"/>
+<rect x="90" y="200" width="16" height="48" rx="8" fill="#c98a35"/><rect x="190" y="200" width="16" height="48" rx="8" fill="#c98a35"/>
+<circle cx="232" cy="165" r="34" fill="#e0a050"/><path d="M246 188q22 6 22-8-4-14-22-8z" fill="#fff1d8"/><path d="M214 138l4-28 18 20zM240 136l14-24 6 26z" fill="#c98a35"/>
+<circle cx="236" cy="162" r="4" fill="#2a2218"/><circle cx="264" cy="178" r="4" fill="#2a2218"/>
+<g id="cape"><path d="M135 100q-50 30-55 70 40-10 90-20z" fill="#b83a2e"/></g>
+<rect x="125" y="96" width="50" height="62" rx="18" fill="#e9b070"/><path d="M125 112h50M125 128h50M125 144h50" stroke="#fff1d8" stroke-width="6"/>
+<rect x="132" y="156" width="36" height="34" rx="8" fill="#355f99"/>
+<circle cx="150" cy="70" r="30" fill="#f1cfa8"/><path d="M120 66q8-32 36-30 20 2 24 28-24-14-60 2z" fill="#3a2a1e"/>
+<g id="eyes"><circle cx="139" cy="74" r="3.5" fill="#2a2218"/><circle cx="161" cy="74" r="3.5" fill="#2a2218"/></g>
+<g fill="none" stroke="#2a2218" stroke-width="2.5"><circle cx="139" cy="74" r="9"/><circle cx="161" cy="74" r="9"/><path d="M148 74h4"/></g>
+<path d="M142 88q8 7 16 0" stroke="#2a2218" stroke-width="2.5" fill="none" stroke-linecap="round"/></g></svg></div>
+</section>
+
+<div class="wrap" style="padding-top:0"><div class="panel"><h2>Từ đâu mà sản phẩm đến?</h2>
+<p class="note">Chạm vào từng nguyên liệu để xem thêm.</p><div class="strip" id="strip"></div></div></div>
+
+<section id="about"><h2>Về dự án</h2><div id="aboutBox"></div></section>
+
+<div class="wrap" id="story" style="padding-top:0"><div class="three">
+<div class="panel"><h2>Câu chuyện của chúng tôi</h2><figure class="slot" data-key="story" style="margin:0 0 .8rem;aspect-ratio:16/9"></figure><p id="storyTxt"></p><a class="btn" href="#game">Xem trò chơi</a></div>
+<div class="panel" id="game"><h2>Hành trình viên đá xanh</h2><figure class="slot" data-key="game" style="margin:0 0 .8rem;aspect-ratio:16/9"></figure><p>Trò chơi đi cảnh ngang 2D: chạy, nhảy và giải cứu bốn người bạn. Bản thử sẽ ra mắt ở giai đoạn sau.</p><button class="btn" disabled>Sắp ra mắt</button></div>
+<div class="panel" id="products"><h2>Sản phẩm: Xà phòng tái sinh</h2><figure class="slot" data-key="soap" style="margin:0 0 .8rem;aspect-ratio:16/9"></figure><p id="soapTxt"></p></div>
+</div></div>
+
+<section id="process"><h2>Quy trình</h2><p>Dữ liệu demo. Nhóm sẽ thay bằng các bước làm thực tế.</p><ol class="steps" id="steps"></ol></section>
+<section id="contact"><h2>Liên hệ</h2><div id="contactBox"></div></section>
+</main>
+<footer><p>MỘC SINH – Lan tỏa lối sống xanh</p><div id="social"></div><span class="note" style="color:#dfe9d0">Dự án sinh viên · Bản demo</span></footer>
+
+<div class="tool"><button class="btn" id="editBtn" aria-pressed="false">Đổi ảnh</button><button class="btn" id="resetBtn" hidden>Xóa ảnh đã chọn</button></div>
+<input type="file" id="file" accept="image/*" hidden>
+
+<script>
+// ===== DỮ LIỆU: sửa ở đây khi có thông tin thật =====
+// images: dán ảnh thật dạng data:image/... vào đây để áp dụng cho mọi người xem (hoặc gửi ảnh cho Claude).
+const DATA={
+tagline:"Từ những điều bị bỏ đi, tạo nên giá trị mới.",
+images:{coffee:"",pomelo:"",orange:"",lemon:"",soap:"",story:"",game:""},
+about:["MỘC SINH là dự án sinh viên làm xà phòng từ phế phẩm của quán nước: bã cà phê, vỏ bưởi, vỏ cam và vỏ chanh.","Vấn đề: những nguyên liệu này thường bị bỏ đi sau khi pha chế. Ý tưởng: thu gom và tái sử dụng thành sản phẩm hữu ích.","[Điền mục tiêu và số liệu thật của nhóm]"],
+ingredients:[{key:"coffee",name:"Bã cà phê",info:"Thu từ quán nước. [Điền vai trò thật trong xà phòng]"},{key:"pomelo",name:"Vỏ bưởi",info:"Thu từ quán nước. [Điền vai trò thật trong xà phòng]"},{key:"orange",name:"Vỏ cam",info:"Thu từ quán nước. [Điền vai trò thật trong xà phòng]"},{key:"lemon",name:"Vỏ chanh",info:"Thu từ quán nước. [Điền vai trò thật trong xà phòng]"}],
+story:"Một cậu bé, một viên đá xanh và hành trình phiêu lưu cùng bốn người bạn: cà phê, bưởi, cam và chanh. Họ cùng chứng minh rằng thứ bị bỏ đi vẫn còn giá trị.",
+soap:"Xà phòng làm từ nguyên liệu tái chế. [Điền thành phần, đặc điểm, giá thật]",
+steps:[["Thu gom","Lấy phế phẩm từ quán nước"],["Xử lý","[Điền cách xử lý thật]"],["Phối hợp","[Điền công thức thật]"],["Tạo xà phòng","[Điền cách làm thật]"],["Thành phẩm","Đóng hộp, hoàn thiện"]],
+contact:[["Nhóm","Nhóm 5"],["Người đại diện","Võ Trung Hiếu"],["Email","hoangquyentrunghieu1983@gmail.com","mailto:hoangquyentrunghieu1983@gmail.com"],["Facebook","Trang Facebook của dự án","https://www.facebook.com/profile.php?id=61580195632434&locale=vi_VN"]],
+social:[["Facebook","https://www.facebook.com/profile.php?id=61580195632434&locale=vi_VN"]]
+};
+// ===== ẢNH MẶC ĐỊNH (minh họa, thay bằng ảnh thật bất cứ lúc nào) =====
+const slice=(c1,c2)=>`<svg viewBox="0 0 120 90"><rect width="120" height="90" fill="#d9c7a0"/><circle cx="60" cy="45" r="32" fill="${c1}"/><circle cx="60" cy="45" r="27" fill="${c2}"/>${[0,1,2,3,4,5,6,7].map(i=>`<path d="M60 45L${60+27*Math.cos(i*.785)} ${45+27*Math.sin(i*.785)}" stroke="${c1}" stroke-width="1.6"/>`).join("")}</svg>`;
+const ART={
+coffee:()=>`<svg viewBox="0 0 120 90"><rect width="120" height="90" fill="#d9c7a0"/><path d="M15 80q45-70 90 0z" fill="#4a3223"/>${Array.from({length:46},(_,i)=>`<ellipse cx="${22+(i*37%76)}" cy="${48+(i*23%30)}" rx="3" ry="2" fill="#2e1d12" transform="rotate(${i*40} ${22+(i*37%76)} ${48+(i*23%30)})"/>`).join("")}</svg>`,
+orange:()=>slice("#e8832a","#f6a94c"),pomelo:()=>slice("#b9cf72","#e6edaa"),lemon:()=>slice("#e6c53a","#f7e47a"),
+soap:()=>`<svg viewBox="0 0 160 90"><rect width="160" height="90" fill="#d9c7a0"/><ellipse cx="80" cy="66" rx="62" ry="14" fill="#8a5c33"/><rect x="40" y="26" width="80" height="40" rx="9" fill="#cfd9a0"/><path d="M80 58c-12-8-12-22 0-28 12 6 12 20 0 28zM80 58V36" stroke="#6f8a45" stroke-width="2.5" fill="none"/></svg>`,
+story:()=>`<svg viewBox="0 0 160 90"><rect width="160" height="90" fill="#cfe3ee"/><path d="M0 70q40-30 80-8t80-14v40H0z" fill="#7aa75a"/><path d="M0 80q50-22 90-4t70-8v22H0z" fill="#4f8a3c"/><circle cx="120" cy="40" r="11" fill="#9be4ff" class="glow"/><path d="M120 31l6 9-6 9-6-9z" fill="#e8fbff"/></svg>`,
+game:()=>`<svg viewBox="0 0 160 90"><rect width="160" height="90" fill="#cfe3ee"/><rect x="0" y="72" width="160" height="18" fill="#6a4a2c"/><rect x="0" y="68" width="160" height="6" fill="#5f9a45"/><rect x="40" y="50" width="34" height="8" fill="#6a4a2c"/><rect x="90" y="36" width="34" height="8" fill="#6a4a2c"/><circle cx="107" cy="28" r="4" fill="#f1d24a"/><circle cx="57" cy="42" r="4" fill="#f1d24a"/><circle cx="20" cy="62" r="6" fill="#b83a2e"/></svg>`};
+// ===== HIỂN THỊ =====
+const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k){try{return localStorage.getItem("mocsinh_"+k)}catch(e){return null}},set(k,v){try{localStorage.setItem("mocsinh_"+k,v);return true}catch(e){return false}},del(k){try{localStorage.removeItem("mocsinh_"+k)}catch(e){}}};
+function fill(el){const k=el.dataset.key,src=store.get(k)||DATA.images[k];el.innerHTML=src?`<img alt="" src="${esc(src)}">`:ART[k]()}
+$("#tag").textContent=DATA.tagline;
+$("#aboutBox").innerHTML=DATA.about.map(t=>`<p>${esc(t)}</p>`).join("");
+$("#strip").innerHTML=DATA.ingredients.map(x=>`<button class="ing" aria-expanded="false"><figure class="slot" data-key="${x.key}" style="margin:0 0 .5rem"></figure><h3>${esc(x.name)}</h3><small>${esc(x.info)}</small></button>`).join("");
+document.querySelectorAll(".ing").forEach(b=>b.addEventListener("click",()=>{if(document.body.classList.contains("edit"))return;b.setAttribute("aria-expanded",b.getAttribute("aria-expanded")!=="true")}));
+$("#storyTxt").textContent=DATA.story;$("#soapTxt").textContent=DATA.soap;
+$("#steps").innerHTML=DATA.steps.map(s=>`<li><h3>${esc(s[0])}</h3><span class="note">${esc(s[1])}</span></li>`).join("");
+$("#contactBox").innerHTML=DATA.contact.map(c=>`<p><b>${esc(c[0])}:</b> ${c[2]?`<a href="${esc(c[2])}" target="_blank" rel="noopener">${esc(c[1])}</a>`:esc(c[1])}</p>`).join("");
+$("#social").innerHTML=DATA.social.map(s=>`<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>`).join("");
+document.querySelectorAll(".slot").forEach(fill);
+// ===== CHẾ ĐỘ ĐỔI ẢNH (chỉ lưu trên thiết bị của bạn, dùng để xem thử) =====
+let target=null;
+$("#editBtn").onclick=e=>{const on=document.body.classList.toggle("edit");e.target.setAttribute("aria-pressed",on);e.target.textContent=on?"Xong":"Đổi ảnh";$("#resetBtn").hidden=!on};
+document.addEventListener("click",e=>{const s=e.target.closest(".slot");if(s&&document.body.classList.contains("edit")){target=s;$("#file").click()}});
+$("#file").onchange=e=>{const f=e.target.files[0];if(!f||!target)return;const img=new Image(),u=URL.createObjectURL(f);img.onload=()=>{const m=900,r=Math.min(1,m/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=img.width*r;c.height=img.height*r;c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);const d=c.toDataURL("image/jpeg",.8);if(!store.set(target.dataset.key,d))alert("Không lưu được ảnh trên thiết bị này (bộ nhớ đầy hoặc bị chặn).");fill(target);e.target.value=""};img.src=u};
+$("#resetBtn").onclick=()=>{document.querySelectorAll(".slot").forEach(s=>{store.del(s.dataset.key);fill(s)})};
+</script>
+</body>
+</html>
