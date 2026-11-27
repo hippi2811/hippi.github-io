@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hành trình viên đá xanh</title>
+<style>
+body{margin:0;background:#8fd3f4;display:grid;place-items:center;min-height:100vh;font-family:sans-serif}
+canvas{background:#cfeefd;max-width:100%;touch-action:none}
+#pad{display:flex;gap:12px;margin:12px}
+#pad button{font-size:1.3rem;padding:14px 22px;border-radius:12px;border:0;background:#fff7e0;touch-action:none}
+</style></head>
+<body>
+<canvas id="g" width="800" height="400"></canvas>
+<div id="pad"><button data-k="left">◀</button><button data-k="right">▶</button><button data-k="jump">Nhảy</button></div>
+<script>
+const c=document.getElementById("g"),ctx=c.getContext("2d");
+const keys={},touch={left:false,right:false,jump:false};
+addEventListener("keydown",e=>{keys[e.code]=true;if(["Space","ArrowUp"].includes(e.code))e.preventDefault()});
+addEventListener("keyup",e=>keys[e.code]=false);
+document.querySelectorAll("#pad button").forEach(b=>{
+  const on=v=>e=>{e.preventDefault();touch[b.dataset.k]=v};
+  b.addEventListener("pointerdown",on(true));
+  b.addEventListener("pointerup",on(false));
+  b.addEventListener("pointerleave",on(false));
+});
+
+const p={x:50,y:200,w:30,h:40,vx:0,vy:0,onGround:false};
+const platforms=[{x:0,y:360,w:1600,h:40},{x:250,y:280,w:120,h:16},{x:450,y:220,w:120,h:16},{x:700,y:290,w:150,h:16},{x:950,y:230,w:120,h:16}];
+const coins=[{x:290,y:250},{x:490,y:190},{x:760,y:260},{x:1000,y:200}].map(o=>({...o,got:false}));
+let score=0,camX=0;
+
+function update(){
+  p.vx=0;
+  if(keys.ArrowLeft||keys.KeyA||touch.left)p.vx=-4;
+  if(keys.ArrowRight||keys.KeyD||touch.right)p.vx=4;
+  if((keys.Space||keys.ArrowUp||keys.KeyW||touch.jump)&&p.onGround){p.vy=-12;p.onGround=false}
+  p.vy+=0.6;
+  p.x+=p.vx; p.y+=p.vy;
+  p.onGround=false;
+  for(const f of platforms){
+    const prevBottom=p.y+p.h-p.vy;
+    if(p.x+p.w>f.x&&p.x<f.x+f.w&&p.y+p.h>=f.y&&prevBottom<=f.y+1&&p.vy>=0){
+      p.y=f.y-p.h;p.vy=0;p.onGround=true;
+    }
+  }
+  for(const k of coins){
+    if(!k.got&&Math.abs(p.x+p.w/2-k.x)<22&&Math.abs(p.y+p.h/2-k.y)<28){k.got=true;score++}
+  }
+  if(p.x<0)p.x=0;
+  if(p.y>500){p.x=50;p.y=200;p.vy=0}
+  camX=Math.max(0,Math.min(p.x-300,1600-800));
+}
+
+function draw(){
+  ctx.clearRect(0,0,800,400);
+  ctx.save();ctx.translate(-camX,0);
+  ctx.fillStyle="#6fb34c";
+  for(const f of platforms)ctx.fillRect(f.x,f.y,f.w,f.h);
+  ctx.fillStyle="#f6c935";
+  for(const k of coins)if(!k.got){ctx.beginPath();ctx.arc(k.x,k.y,8,0,7);ctx.fill()}
+  ctx.fillStyle="#b83a2e";ctx.fillRect(p.x,p.y,p.w,p.h);
+  ctx.restore();
+  ctx.fillStyle="#2a2218";ctx.font="20px sans-serif";
+  ctx.fillText("Điểm: "+score+"/"+coins.length,16,28);
+  if(score===coins.length)ctx.fillText("Bạn đã tìm đủ viên đá!",300,60);
+}
+
+function loop(){update();draw();requestAnimationFrame(loop)}
+loop();
+</script>
+</body></html>
